@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/script.js" defer></script>
+    <title>Parking</title>
+</head>
+<body>
+
+    <fieldset>
+        <form action="">
+            <div>
+                <label for="plate" >Plate Number</label>
+                <input type="text" name="plate" maxlength="8" data-plate>
+            </div>
+            <div>
+                <label for="brand">Brand</label>
+                <select name="brand" id="" data-brand>
+                    <option value="Audi">Audi</option>
+                    <option value="VW">VW</option>
+                    <option value="Ford">Ford</option>
+                    <option value="Hyundai">Hyundai</option>
+                    <option value="Toyota">Toyota</option>
+                    <option value="Honda">Honda</option>
+                </select>
+            </div>
+            <div>
+                <label for="model">Model</label>
+                <input type="text" name="model" data-model>
+            </div>
+
+            <input type="submit" value="" style="display: none;">
+        </form>        
+    </fieldset>
+    <hr>
+    <div>
+        <h2>Parked</h2>
+        <table>
+            <thead>
+                <th>Brand</th>
+                <th>Model</th>
+                <th>Plate</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>To pay</th>
+                <th>Actions</th>
+            </thead>
+            <tbody data-table>
+                <!-- <tr>
+                    <td>Toyota</td>
+                    <td>Corolla</td>
+                    <td>QCY-9925</td>
+                    <td>10:15</td>
+                    <td></td>
+                    <td>R$ 5,00</td>
+                    <td class="actions">
+                        <span class="payment">&dollar;</span>
+                        <span class="del">&Cross;</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Hyundai</td>
+                    <td>Creta</td>
+                    <td>RAT5F4</td>
+                    <td>10:22</td>
+                    <td></td>
+                    <td>R$ 7,00</td>
+                    <td class="actions">
+                        <span class="payment">&dollar;</span>
+                        <span class="del">&Cross;</span>
+                    </td> -->
+                </tr>                
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

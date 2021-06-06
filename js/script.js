@@ -43,9 +43,6 @@ const Form = {
 
         return `${(hours < 10 ? "0" : "") + hours}:${(minutes < 10 ? "0" : "") + minutes}`
     },
-
-    checkOut: "",
-
     getValues() {
 
         if(!this.plate.value || !this.brand.value || !this.model.value) {
@@ -56,10 +53,10 @@ const Form = {
             brand: Form.brand.value,
             model: Form.model.value,
             checkIn: Form.checkIn(),
-            checkOut: "",
+            checkOut: null,
+            income: null,
         }
     },
-
     clear() {
         Form.plate.value = "",
         Form.brand.value = "",
@@ -79,7 +76,7 @@ const Car = {
                             <td data-plate>${car.plate}</td>
                             <td>${car.checkIn}</td>
                             <td data-checkout></td>
-                            <td></td>
+                            <td data-cost></td>
                             <td class="actions">
                                 <span class="payment">&dollar;</span>
                                 <span class="del">&Cross;</span>
@@ -90,10 +87,14 @@ const Car = {
 
         tr.querySelector('.payment').addEventListener('click', (e) => {
             tr.querySelector('[data-checkout]').textContent = Car.checkOut()
+            
+            tr.querySelector('[data-cost]').textContent = Car.calcCost(car)
         })
 
         tr.querySelector('.del').addEventListener('click', () => {
-            
+            let plate = tr.querySelector("[data-plate]").innerText
+
+            Car.remove(plate)
             tr.remove()
         })
         
@@ -109,8 +110,41 @@ const Car = {
     },
 
     calcCost(car) {
-        // TODO fazer calculo de horas
-        console.log(car.checkIn - car.checkOut);
+        let checkIn = car.checkIn.split(":")
+        let checkOut = Car.checkOut().split(":")
+
+        let totalHours = +checkOut[0] - +checkIn[0]
+        let totalMinutes = +checkOut[1] - +checkIn[1]
+        let totalInMinutes = (totalHours * 60) + totalMinutes
+        
+        // R$ 5,00 for 1 hour and R$ 3,00 for extra hours
+        let initialCost = 5
+        console.log(totalInMinutes);
+
+        if (totalInMinutes < 0) {
+            let extraTime = ~~(totalInMinutes / 60)
+            console.log(extraTime);
+            extraTime += 24
+            let total = initialCost + (extraTime * 3)
+           
+            console.log(`Total in minutes: ${totalInMinutes}
+            Total in Hours: ${(totalInMinutes/60).toFixed(2)}`)
+
+            return MoneyFormatter.format(total)
+        }
+
+        if (totalInMinutes <= 60 && totalInMinutes > 0) {
+            return MoneyFormatter.format(initialCost)
+        } else {
+            // equals Math.floor(total minutes / 60)
+            let extraTime = ~~(totalInMinutes / 60)
+            let total = initialCost + (extraTime * 3)
+           
+            console.log(`Total in minutes: ${totalInMinutes}
+            Total in Hours: ${(totalInMinutes/60).toFixed(2)}`)
+
+            return MoneyFormatter.format(total)
+        }
     },
 
     remove(plate) {
@@ -122,6 +156,11 @@ const Car = {
     }
     
 }
+
+var MoneyFormatter = new Intl.NumberFormat("pt-br", {
+    style: "currency",
+    currency: "BRL",
+})
 
 const App = {
     init() {
@@ -151,7 +190,8 @@ const App = {
 
             tr.querySelector('.payment').addEventListener('click', (e) => {
                 tr.querySelector('[data-checkout]').textContent = Car.checkOut()
-                Car.calcCost(car)
+                
+                tr.querySelector('[data-cost]').textContent = Car.calcCost(car)
             })
 
             tr.querySelector('.del').addEventListener('click', () => {
